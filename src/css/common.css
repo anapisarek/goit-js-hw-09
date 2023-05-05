@@ -60,6 +60,5 @@ button:disabled {
   gap: 1rem;
 }
 .form input {
-  justify-content: end;
   border-radius: 0.3rem;
 }
