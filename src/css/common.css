@@ -42,23 +42,21 @@ button:disabled {
   flex-direction: column;
   text-transform: uppercase;
 }
-.value {
-  text-align: center;
-  font-size: 2rem;
+.label {
+  font-size: 12px;
 }
-.form {
+
+.field:not(:last-child) {
+  margin-right: 40px;
+}
+
+.description {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
+  margin-left: 60px;
+  font-size: 12px;
 }
-.form label {
-  width: 100%;
-  justify-content: space-between;
-  display: flex;
-  gap: 1rem;
-}
-.form input {
-  border-radius: 0.3rem;
+
+.bold {
+  font-size: 18px;
+  font-weight: 600;
 }
