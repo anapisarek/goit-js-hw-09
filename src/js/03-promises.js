@@ -7,25 +7,31 @@ const buttonEl = document.querySelector('button[type=submit]');
 
 const createPromise = (position, delay) => {
   return new Promise((resolve, reject) => {
-    const shouldResolve = Math.random() > 0.3;
-    if (shouldResolve) {
-      resolve(`Fulfilled promise ${position} in ${delay}ms`);
-    } else {
-      reject(`Rejected promise ${position} in ${delay}ms`);
-    }
+    setTimeout(() => {
+      const shouldResolve = Math.random() > 0.3;
+      shouldResolve
+        ? resolve(`✅ Fulfilled promise ${position} in ${delay}ms`)
+        : reject(`❌ Rejected promise ${position} in ${delay}ms`);
+    }, delay);
   });
 };
 
-const showPromise = (amount, step, time, current = 1) => {
-  if (current > amount) return;
-  createPromise(current, time)
-    .then(success => Notiflix.Notify.success(success))
-    .catch(error => Notiflix.Notify.failure(error));
-  time += step;
-  setTimeout(() => showPromise(amount, step, time, current + 1), step);
+const showPromise = () => {
+  let delay = +delayEl.value;
+
+  for (let i = 1; i <= amountEl.value; i++) {
+    createPromise(i, delay)
+      .then(success => {
+        Notiflix.Notify.success(success);
+      })
+      .catch(error => {
+        Notiflix.Notify.failure(error);
+      });
+    delay += +stepEl.value;
+  }
 };
 
-buttonEl.addEventListener('click', event => {
-  event.preventDefault();
-  setTimeout(() => showPromise(+amountEl.value, +stepEl.value, +delayEl.value), +delayEl.value);
+buttonEl.addEventListener('click', e => {
+  e.preventDefault();
+  showPromise();
 });

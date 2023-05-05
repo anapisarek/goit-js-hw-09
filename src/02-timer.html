@@ -7,13 +7,10 @@
     <link rel="stylesheet" href="css/common.css" />
   </head>
   <body>
-    <p><a href="index.html" class="home-link">Go back</a></p>
-
-    <input type="text" id="datetime-picker" />
-    <div>
-      <button type="button" data-start>Start</button>
-      <button type="button" data-pause>Pause</button>
-      <button type="button" data-reset>Reset</button>
+    <p><a href="index.html">Go back</a></p>
+    <div class="select">
+      <input type="text" id="datetime-picker" />
+      <button type="button" id="start-picker" data-start>Start</button>
     </div>
 
     <div class="timer">
@@ -32,6 +29,10 @@
       <div class="field">
         <span class="value" data-seconds>00</span>
         <span class="label">Seconds</span>
+      </div>
+      <div class="field">
+        <span class="value" data-working>Not set </span>
+        <span class="label">Timer status</span>
       </div>
     </div>
 
