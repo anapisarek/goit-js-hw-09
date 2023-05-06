@@ -2,118 +2,73 @@ import flatpickr from 'flatpickr';
 import Notiflix from 'notiflix';
 import 'flatpickr/dist/flatpickr.min.css';
 
-//Adding the HTML document elements to javascript
 const dataInputEl = document.getElementById('datetime-picker');
-const startButton = document.querySelector('[data-start]');
-const pauseButton = document.querySelector('[data-pause]');
-const resetButton = document.querySelector('[data-reset]');
-const daysLeft = document.querySelector('[data-days]');
-const hoursLeft = document.querySelector('[data-hours]');
-const minutesLeft = document.querySelector('[data-minutes]');
-const secondsLeft = document.querySelector('[data-seconds]');
+const startBtn = document.querySelector('[data-start]');
+const daysUpdate = document.querySelector('[data-days]');
+const hoursUpdate = document.querySelector('[data-hours]');
+const minutesUpdate = document.querySelector('[data-minutes]');
+const secondsUpdate = document.querySelector('[data-seconds]');
 
-//Add null variable to declare and clear Intervals.
-let countDown = null;
+let countDownInterval = null;
+let userSelectedDate = 0;
+let ms = 0;
+let dateUpdate = {};
 
-//Variables to store and update milliseconds Left and object to store those milliseconds as human friendly date
-let pickedDate = 0;
-let millisecondsLeft = 0;
-let timeLeft = {};
+startBtn.disabled = true;
 
-startButton.disabled = true;
-pauseButton.disabled = true;
-resetButton.disabled = true;
-
-//Function that convert Milisecond from .getTime() to date in days hours minutes and seconds
 const convertMs = ms => {
-  // Number of milliseconds per unit of time
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
 
-  // Remaining days
   const days = Math.floor(ms / day);
-  // Remaining hours
   const hours = Math.floor((ms % day) / hour);
-  // Remaining minutes
   const minutes = Math.floor(((ms % day) % hour) / minute);
-  // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
 };
 
-//Add 0 to the beginning of string if timenumber < 9
-const addLeadingZero = value => {
-  if (value < 10) return value.toString().padStart(2, '0');
-  return value;
-};
-
-//Function that is going to be activated only once when the counter goes to 0
-const endCountdown = () => {
-  clearInterval(countDown);
-  daysLeft.textContent = '00';
-  hoursLeft.textContent = '00';
-  minutesLeft.textContent = '00';
-  secondsLeft.textContent = '00';
-};
-
-//Function that updates Time Left (-1 second every time) and putting it to the HTML textContent
-const updateTimeLeft = () => {
-  timeLeft = convertMs(millisecondsLeft);
-  daysLeft.textContent = addLeadingZero(timeLeft.days);
-  hoursLeft.textContent = addLeadingZero(timeLeft.hours);
-  minutesLeft.textContent = addLeadingZero(timeLeft.minutes);
-  secondsLeft.textContent = addLeadingZero(timeLeft.seconds);
-  millisecondsLeft -= 1000;
-  if (millisecondsLeft < 0) {
-    endCountdown();
-    Notiflix.Report.success('Countdown ended!', 'The time has come!', 'Thank you!');
-  }
-};
-
-//FlatPickr options that declares how the date picker should look and behave.
 const options = {
   enableTime: true,
   time_24hr: true,
-  //minDate: new Date(),   <- Disabling every date in the past - User cannot chose it.
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    pickedDate = selectedDates[0].getTime();
-    millisecondsLeft = pickedDate - new Date().getTime();
-    if (millisecondsLeft < 0)
-      return Notiflix.Report.failure(
-        'Please choose a date in the future',
-        '',
-        'OK will do captain!'
-      );
-    startButton.disabled = false;
+    userSelectedDate = selectedDates[0].getTime();
+    ms = userSelectedDate - Date.now();
+    if (selectedDates[0].getTime() < Date.now())
+      return Notiflix.Notify.failure('Please choose a date in the future');
+    startBtn.disabled = false;
   },
 };
 
 flatpickr(dataInputEl, options);
-startButton.addEventListener('click', () => {
-  millisecondsLeft = pickedDate - new Date().getTime();
-  clearInterval(countDown);
-  countDown = setInterval(() => updateTimeLeft(), 1000);
-  startButton.disabled = true;
-  pauseButton.disabled = false;
-  resetButton.disabled = false;
-});
 
-pauseButton.addEventListener('click', () => {
-  clearInterval(countDown);
-  Notiflix.Notify.warning('Countdown paused');
-  startButton.disabled = false;
-  pauseButton.disabled = true;
-});
+const addLeadingZero = e => e.toString().padStart(2, '0');
 
-resetButton.addEventListener('click', () => {
-  pauseButton.disabled = true;
-  resetButton.disabled = true;
-  clearInterval(countDown);
-  endCountdown();
-  Notiflix.Notify.warning('Countdown reseted');
+const timeUpdate = () => {
+  dateUpdate = convertMs(ms);
+  daysUpdate.textContent = addLeadingZero(dateUpdate.days);
+  hoursUpdate.textContent = addLeadingZero(dateUpdate.hours);
+  minutesUpdate.textContent = addLeadingZero(dateUpdate.minutes);
+  secondsUpdate.textContent = addLeadingZero(dateUpdate.seconds);
+  ms -= 1000;
+
+  if (ms < 0) {
+    clearInterval(countDownInterval);
+    daysUpdate.textContent = '00';
+    hoursUpdate.textContent = '00';
+    minutesUpdate.textContent = '00';
+    secondsUpdate.textContent = '00';
+    Notiflix.Notify.success(`Time's up! WELCOME!`);
+  }
+};
+
+startBtn.addEventListener('click', () => {
+  ms = userSelectedDate - Date.now();
+  clearInterval(countDownInterval);
+  countDownInterval = setInterval(() => timeUpdate(), 1000);
+  startBtn.disabled = true;
 });
