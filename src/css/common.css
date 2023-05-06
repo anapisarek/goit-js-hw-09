@@ -10,36 +10,62 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
+  height: 100vh;
+  flex-direction: column;
 }
 
 img {
   display: block;
   max-width: 100%;
 }
+.wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.wrapper button {
+  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 40px;
+  border-radius: 0.5rem;
+  box-shadow: 4px 4px black;
+  transition-duration: 100ms;
+}
+
+button {
+  box-shadow: 2px 2px black;
+  transition-duration: 100ms;
+}
+
+button:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px black;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  box-shadow: inset 2px 2px black;
+}
 
 .timer {
   display: flex;
-  gap: 16px;
+  gap: 15px;
 }
 
 .field {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  line-height: 1.2;
-  margin-top: 16px;
-  background-color: #f0f0f0;
-  border: 1px dashed gray;
-  border-radius: 4px;
-  padding: 8px 5px;
+  flex-direction: column;
 }
 
 .value {
-  font-size: 40px;
-  font-weight: 500;
+  font-size: 3rem;
 }
 
 .label {
-  font-weight: 500;
-  text-transform: uppercase;
+  font-size: 1rem;
 }
