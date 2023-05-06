@@ -30,3 +30,16 @@ img {
   text-align: center;
   font-size: 2rem;
 }
+button {
+  background-color: #ffffff;
+  color: #212121;
+  width: 7rem;
+  height: 3rem;
+  font-size: 1rem;
+  border-radius: 1rem;
+}
+button:hover,
+button:disabled {
+  cursor: pointer;
+  background-color: transparent;
+}
