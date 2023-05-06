@@ -32,23 +32,23 @@ img {
   gap: 10px;
   padding: 20px 40px;
   border-radius: 0.5rem;
-  box-shadow: 4px 4px black;
+  box-shadow: #212121 2px -2px 10 1;
   transition-duration: 100ms;
 }
 
 button {
-  box-shadow: 2px 2px black;
+  box-shadow: #212121 2px -2px 10 1;
   transition-duration: 100ms;
 }
 
 button:hover {
   cursor: pointer;
-  box-shadow: 1px 1px black;
+  box-shadow: #212121 2px -2px 10 1;
 }
 
 button:disabled {
   cursor: not-allowed;
-  box-shadow: inset 2px 2px black;
+  box-shadow: #212121 2px -2px 10 1;
 }
 
 .timer {
